@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>母亲节快乐</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #f0f2f5;
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'Noto Sans SC', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px;
+        }
+
+        /* 背景装饰 */
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255,182,193,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,218,185,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(221,160,221,0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 信封容器 - 手机全屏适配 */
+        .envelope-wrapper {
+            position: relative;
+            width: 88vw;
+            height: 58vw;
+            max-width: 420px;
+            max-height: 280px;
+            cursor: pointer;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 10;
+        }
+
+        .envelope-wrapper:active {
+            transform: scale(0.98);
+        }
+
+        .envelope-wrapper.opened {
+            pointer-events: none;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s ease;
+        }
+
+        /* 信封主体 */
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #e8d5b7 0%, #d4c4a8 100%);
+            border-radius: 0 0 3vw 3vw;
+            box-shadow: 
+                0 10px 40px rgba(0,0,0,0.15),
+                0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 44vw solid transparent;
+            border-right: 44vw solid transparent;
+            border-bottom: 34vw solid #c9b896;
+            max-border-left: 210px solid transparent;
+            max-border-right: 210px solid transparent;
+            max-border-bottom: 165px solid #c9b896;
+            z-index: 3;
+        }
+
+        .envelope::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 44vw solid transparent;
+            border-right: 44vw solid transparent;
+            border-top: 34vw solid #d4c4a8;
+            z-index: 2;
+        }
+
+        /* 信封翻盖 */
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 44vw solid transparent;
+            border-right: 44vw solid transparent;
+            border-top: 34vw solid #dccbb0;
+            transform-origin: top;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 4;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .envelope-wrapper.opened .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        /* 火漆印章 */
+        .seal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 14vw;
+            height: 14vw;
+            max-width: 55px;
+            max-height: 55px;
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            border-radius: 50%;
+            z-index: 5;
+            box-shadow: 
+                0 3px 10px rgba(192, 57, 43, 0.4),
+                inset 0 -2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.6s ease;
+        }
+
+        .seal::before {
+            content: '❤';
+            color: rgba(255,255,255,0.9);
+            font-size: 6vw;
+            max-font-size: 24px;
+        }
+
+        .envelope-wrapper.opened .seal {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        /* 提示文字 */
+        .hint-text {
+            position: absolute;
+            bottom: -10vw;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #999;
+            font-size: 4vw;
+            max-font-size: 16px;
+            white-space: nowrap;
+            animation: pulse 2s infinite;
+            transition: opacity 0.5s;
+        }
+
+        .envelope-wrapper.opened .hint-text {
+            opacity: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* 贺卡内容 - 手机全屏 */
+        .card-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #fffaf0 0%, #fff5e6 100%);
+            padding: 8vh 6vw;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            transform: translateY(100%);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .card-content.show {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        /* 贺卡装饰边框 */
+        .card-content::before {
+            content: '';
+            position: absolute;
+            top: 3vh; left: 4vw; right: 4vw; bottom: 3vh;
+            border: 2px solid rgba(231, 76, 60, 0.12);
+            border-radius: 3vw;
+            pointer-events: none;
+        }
+
+        /* 顶部小花装饰 */
+        .card-flower {
+            width: 18vw;
+            height: 18vw;
+            max-width: 80px;
+            max-height: 80px;
+            margin: 0 auto 3vh;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .card-flower .f-petal {
+            position: absolute;
+            width: 5.5vw;
+            height: 8vw;
+            max-width: 24px;
+            max-height: 35px;
+            background: linear-gradient(to top, #e84393, #fd79a8);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            top: 50%; left: 50%;
+            transform-origin: center bottom;
+        }
+
+        .card-flower .f-petal:nth-child(1) { transform: translate(-50%, -100%) rotate(0deg); }
+        .card-flower .f-petal:nth-child(2) { transform: translate(-50%, -100%) rotate(60deg); }
+        .card-flower .f-petal:nth-child(3) { transform: translate(-50%, -100%) rotate(120deg); }
+        .card-flower .f-petal:nth-child(4) { transform: translate(-50%, -100%) rotate(180deg); }
+        .card-flower .f-petal:nth-child(5) { transform: translate(-50%, -100%) rotate(240deg); }
+        .card-flower .f-petal:nth-child(6) { transform: translate(-50%, -100%) rotate(300deg); }
+
+        .card-flower .f-center {
+            position: absolute;
+            width: 4vw;
+            height: 4vw;
+            max-width: 18px;
+            max-height: 18px;
+            background: #ffeaa7;
+            border-radius: 50%;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* 贺卡文字 */
+        .card-content h2 {
+            color: #2d3436;
+            font-size: 9vw;
+            max-font-size: 42px;
+            font-weight: 600;
+            margin-bottom: 1vh;
+            letter-spacing: 0.1em;
+            flex-shrink: 0;
+        }
+
+        .card-content .subtitle {
+            color: #e84393;
+            font-size: 3.5vw;
+            max-font-size: 16px;
+            letter-spacing: 0.2em;
+            margin-bottom: 3vh;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .card-content .message {
+            color: #636e72;
+            font-size: 4.5vw;
+            max-font-size: 20px;
+            line-height: 2.2;
+            margin-bottom: 3vh;
+            flex-shrink: 0;
+        }
+
+        .card-content .message .highlight {
+            color: #e84393;
+            font-weight: 600;
+        }
+
+        .card-content .divider {
+            width: 12vw;
+            max-width: 50px;
+            height: 2px;
+            background: linear-gradient(to right, #fd79a8, #e84393);
+            margin: 0 auto 2vh;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .card-content .wish {
+            color: #b2bec3;
+            font-size: 3.5vw;
+            max-font-size: 15px;
+            font-style: italic;
+            line-height: 1.8;
+            margin-bottom: 2vh;
+            flex-shrink: 0;
+        }
+
+        .card-content .signature {
+            color: #e84393;
+            font-size: 4vw;
+            max-font-size: 18px;
+            font-weight: 500;
+            margin-top: 2vh;
+            flex-shrink: 0;
+        }
+
+        .card-content .year {
+            color: #ddd;
+            font-size: 3vw;
+            max-font-size: 14px;
+            letter-spacing: 0.15em;
+            margin-top: 1vh;
+            flex-shrink: 0;
+        }
+
+        /* 飘落花瓣 */
+        .petal {
+            position: fixed;
+            top: -30px;
+            font-size: 5vw;
+            max-font-size: 22px;
+            pointer-events: none;
+            z-index: 100;
+            animation: petalFall linear forwards;
+        }
+
+        @keyframes petalFall {
+            0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.8; }
+            25% { transform: translateY(25vh) rotate(90deg) translateX(20px); }
+            50% { transform: translateY(50vh) rotate(180deg) translateX(-20px); }
+            75% { transform: translateY(75vh) rotate(270deg) translateX(15px); }
+            100% { transform: translateY(110vh) rotate(360deg) translateX(0); opacity: 0; }
+        }
+
+        /* 关闭按钮 */
+        .close-btn {
+            position: absolute;
+            top: 2vh;
+            right: 4vw;
+            width: 10vw;
+            height: 10vw;
+            max-width: 40px;
+            max-height: 40px;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e84393;
+            font-size: 5vw;
+            max-font-size: 20px;
+            cursor: pointer;
+            z-index: 30;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .card-content.show .close-btn {
+            opacity: 1;
+            pointer-events: all;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+        <div class="envelope">
+            <div class="flap"></div>
+        </div>
+        <div class="seal"></div>
+        <div class="hint-text">点击打开贺卡</div>
+    </div>
+
+    <div class="card-content" id="cardContent">
+        <div class="close-btn" onclick="closeCard(event)">✕</div>
+        <div class="card-flower">
+            <div class="f-petal"></div>
+            <div class="f-petal"></div>
+            <div class="f-petal"></div>
+            <div class="f-petal"></div>
+            <div class="f-petal"></div>
+            <div class="f-petal"></div>
+            <div class="f-center"></div>
+        </div>
+        <h2>母亲节快乐</h2>
+        <p class="subtitle">Happy Mother's Day</p>
+        <div class="divider"></div>
+        <p class="message">
+            感谢您用<span class="highlight">无尽的爱</span>浇灌我成长<br>
+            您的付出，是我生命中最温暖的光<br>
+            愿岁月温柔待您，健康幸福常伴
+        </p>
+        <p class="wish">You are the best mom in the world</p>
+        <p class="signature">爱您的孩子</p>
+        <p class="year" id="yearText">2026</p>
+    </div>
+
+    <script>
+        let opened = false;
+
+        function openEnvelope() {
+            if (opened) return;
+            opened = true;
+
+            const envelope = document.getElementById('envelope');
+            const card = document.getElementById('cardContent');
+
+            envelope.classList.add('opened');
+
+            setTimeout(() => {
+                card.classList.add('show');
+                // 花瓣飘落
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(createPetal, i * 150);
+                }
+            }, 400);
+        }
+
+        function closeCard(e) {
+            e.stopPropagation();
+            const envelope = document.getElementById('envelope');
+            const card = document.getElementById('cardContent');
+
+            card.classList.remove('show');
+
+            setTimeout(() => {
+                envelope.classList.remove('opened');
+                envelope.style.opacity = '1';
+                envelope.style.transform = 'scale(1)';
+                opened = false;
+            }, 600);
+        }
+
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            const flowers = ['❀', '✿', '❁', '🌸'];
+            petal.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+            petal.style.left = Math.random() * 100 + '%';
+            petal.style.color = ['#fd79a8', '#e84393', '#fab1a0', '#ffeaa7'][Math.floor(Math.random() * 4)];
+            petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.body.appendChild(petal);
+            setTimeout(() => petal.remove(), 8000);
+        }
+
+        document.getElementById('yearText').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
