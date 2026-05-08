@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>妈妈，母亲节快乐</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      background: linear-gradient(135deg, #fff1f5, #ffe4ec, #fff7ed);
+      color: #5c2a32;
+      overflow-x: hidden;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 760px;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 28px;
+      padding: 38px 28px;
+      box-shadow: 0 24px 70px rgba(186, 77, 103, 0.22);
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: #fff0f4;
+      color: #c44767;
+      font-size: 14px;
+      margin-bottom: 18px;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-size: clamp(34px, 7vw, 64px);
+      line-height: 1.1;
+      color: #b83255;
+      margin-bottom: 18px;
+      text-shadow: 0 8px 24px rgba(184, 50, 85, 0.18);
+    }
+
+    .subtitle {
+      font-size: clamp(17px, 3vw, 22px);
+      line-height: 1.9;
+      color: #7a3945;
+      margin: 0 auto 26px;
+      max-width: 620px;
+    }
+
+    .message {
+      min-height: 132px;
+      margin: 26px auto;
+      padding: 24px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #fff9fb, #fff1f5);
+      border: 1px solid #ffd3de;
+      font-size: clamp(18px, 3vw, 24px);
+      line-height: 1.8;
+      color: #6e303d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.35s ease;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(135deg, #e85d7a, #b83255);
+      box-shadow: 0 12px 28px rgba(184, 50, 85, 0.28);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 34px rgba(184, 50, 85, 0.34);
+    }
+
+    button.secondary {
+      background: linear-gradient(135deg, #f6ad55, #dd6b20);
+    }
+
+    .signature {
+      margin-top: 28px;
+      font-size: 16px;
+      color: #9b4d5d;
+    }
+
+    .heart {
+      position: fixed;
+      top: -30px;
+      color: #ef5d7a;
+      font-size: 20px;
+      animation: fall linear forwards;
+      z-index: 1;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .flower {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 160, 180, 0.45), transparent 65%);
+      filter: blur(2px);
+      z-index: 0;
+    }
+
+    .flower.one {
+      top: 8%;
+      left: 8%;
+    }
+
+    .flower.two {
+      right: 6%;
+      bottom: 10%;
+      background: radial-gradient(circle, rgba(255, 202, 128, 0.42), transparent 65%);
+    }
+
+    .photo-box {
+      margin: 22px auto 0;
+      width: min(260px, 72vw);
+      height: min(260px, 72vw);
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffe4ec, #fff8f0);
+      border: 8px solid white;
+      box-shadow: 0 16px 40px rgba(184, 50, 85, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c44767;
+      font-size: 18px;
+      line-height: 1.7;
+      padding: 28px;
+    }
+
+    @media (max-width: 520px) {
+      .card {
+        padding: 30px 20px;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="flower one"></div>
+    <div class="flower two"></div>
+
+    <section class="card">
+      <div class="tag">给世界上最好的妈妈</div>
+      <h1>妈妈，母亲节快乐</h1>
+
+      <p class="subtitle">
+        谢谢你把平凡的日子过成了家，也谢谢你一直用最温柔的方式爱着我。
+      </p>
+
+      <div class="photo-box">
+        妈妈，今天的主角是你<br />愿你永远被爱包围
+      </div>
+
+      <div id="message" class="message">
+        妈妈，辛苦了。以后换我多照顾你一点。
+      </div>
+
+      <div class="buttons">
+        <button onclick="showMessage()">点一下，收下祝福</button>
+        <button class="secondary" onclick="sendLove()">再点一下，送你小心心</button>
+      </div>
+
+      <p class="signature">—— 永远爱你的孩子</p>
+    </section>
+  </main>
+
+  <script>
+    const messages = [
+      "妈妈，愿你今天开心，明天开心，以后的每一天都被温柔以待。",
+      "你陪我长大，我陪你慢慢变老。母亲节快乐。",
+      "谢谢你不是超人，却为我变成了无所不能的人。",
+      "愿妈妈少一点辛苦，多一点快乐；少一点操心，多一点被爱。",
+      "妈妈，你永远是我心里最温暖、最可靠、最想感谢的人。",
+      "今天不许累，不许烦，只负责漂亮、开心和收祝福。"
+    ];
+
+    let index = 0;
+
+    function showMessage() {
+      const box = document.getElementById("message");
+      box.style.opacity = "0";
+      box.style.transform = "translateY(8px)";
+
+      setTimeout(function () {
+        box.textContent = messages[index];
+        box.style.opacity = "1";
+        box.style.transform = "translateY(0)";
+        index = (index + 1) % messages.length;
+      }, 180);
+    }
+
+    function sendLove() {
+      for (let i = 0; i < 18; i++) {
+        createHeart();
+      }
+    }
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = Math.random() > 0.5 ? "❤" : "✿";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = 16 + Math.random() * 22 + "px";
+      heart.style.animationDuration = 3 + Math.random() * 3 + "s";
+      document.body.appendChild(heart);
+
+      setTimeout(function () {
+        heart.remove();
+      }, 6500);
+    }
+
+    setInterval(createHeart, 900);
+  </script>
+</body>
+</html>
